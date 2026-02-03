@@ -31,7 +31,7 @@ claw-usage --json
 
 - `--days=N` — Analyze last N days (default: 1)
 - `--date=YYYY-MM-DD` — Specific date
-- `--json` — Output JSON
+- `--human, -H — Human-readable output (default: JSON)
 - `-v` — Verbose (show commands)
 
 ## Use Cases
