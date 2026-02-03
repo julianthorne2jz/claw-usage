@@ -113,7 +113,7 @@ function getSessionDate(filepath) {
 }
 
 async function analyze(options = {}) {
-    const { date, days, json, verbose } = options;
+    const { date, days, human, verbose } = options;
     
     const installedTools = getInstalledTools();
     
