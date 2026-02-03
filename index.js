@@ -181,7 +181,7 @@ async function analyze(options = {}) {
         .filter(([_, count]) => count === 0)
         .sort((a, b) => a[0].localeCompare(b[0]));
     
-    if (json) {
+    if (!human) {
         const result = {
             summary: {
                 totalCalls,
@@ -263,7 +263,7 @@ Usage:
 Options:
   --date=<YYYY-MM-DD|today|yesterday>  Filter by date
   --days=<n>                           Analyze last n days (default: 1)
-  --json                               Output JSON
+  --human, -H                        Human-readable output (default: JSON)
   --verbose, -v                        Show example commands
   -h, --help                           Show this help
 
@@ -288,7 +288,7 @@ if (flags.h || flags.help) {
     analyze({
         date: flags.date,
         days: days,
-        json: flags.json,
+        human: flags.human || flags.H,
         verbose: flags.verbose || flags.v
     });
 }
