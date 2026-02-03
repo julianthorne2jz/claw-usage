@@ -1,13 +1,13 @@
 # claw-usage
 
-Analyze AI transcript tool usage to find which tools are used vs unused — save tokens by removing bloat.
+Analyze usage of your claw-* skills from AI transcripts. Find which tools you actually use vs which are sitting idle.
 
 ## Why
 
-Every tool in your system prompt costs tokens. If you never use a tool, it's wasting context window. This tool parses OpenClaw session transcripts and counts tool calls to show:
+You build tools. But do you use them? This parses OpenClaw session transcripts to count how often each claw-* skill is invoked via exec commands:
 
-- Which tools you use heavily (core tools)
-- Which tools you rarely/never use (candidates for removal)
+- Which skills you use heavily (keep improving)
+- Which skills you rarely/never use (deletion candidates)
 - Usage patterns over time
 
 ## Install
@@ -21,17 +21,14 @@ npm link
 ## Usage
 
 ```bash
-# Analyze all sessions
+# Analyze last 24 hours (default)
 claw-usage
-
-# Today only
-claw-usage --date=today
-
-# Yesterday
-claw-usage --date=yesterday
 
 # Last 7 days
 claw-usage --days=7
+
+# All time
+claw-usage --days=999
 
 # Specific date
 claw-usage --date=2026-02-02
@@ -39,61 +36,65 @@ claw-usage --date=2026-02-02
 # JSON output (for automation)
 claw-usage --json
 
-# Verbose (per-session breakdown)
-claw-usage --date=today -v
+# Verbose (show example commands)
+claw-usage -v
 ```
 
 ## Output
 
 ```
-📊 Tool Usage Analysis
+📊 claw-* Tool Usage Analysis
 
-Sessions analyzed: 106
-Total tool calls: 3025
-Unique tools: 15
+Sessions analyzed: 107
+Total tool invocations: 843
+Tools installed: 22
+Tools used: 22 | Unused: 0
 
-────────────────────────────────────────────────────────────
-Tool                    Calls   Sessions        %
-────────────────────────────────────────────────────────────
-🔥 exec                   1120         79    37.0%
-🔥 read                    519        101    17.2%
-🔥 browser                 377         34    12.5%
-🟢 write                   184         45     6.1%
-🔵 web_search               19         17     0.6%
-⚪ nodes                     1          1     0.0%
-────────────────────────────────────────────────────────────
+──────────────────────────────────────────────────
+Tool                         Calls        %
+──────────────────────────────────────────────────
+🔥 claw-devlog                  135    16.0%
+🔥 claw-todo                     76     9.0%
+🔥 claw-git                      70     8.3%
+🔥 claw-lint                     44     5.2%
+🔥 claw-molt                     25     3.0%
+🟢 claw-flow                      7     0.8%
+🟢 claw-usage                     5     0.6%
+──────────────────────────────────────────────────
 
-⚠️  Low usage (consider removing to save tokens):
-   • nodes (1 call)
+⚠️  UNUSED TOOLS (0 invocations — consider removing):
+   ❌ claw-foo
+   ❌ claw-bar
 
-🔥 Heavy usage (core tools):
-   • exec (1120 calls, 37.0%)
-   • read (519 calls, 17.2%)
+📋 Summary:
+   • 2 tools have ZERO usage — review for removal
+   • Top tools: claw-devlog, claw-todo, claw-git
 ```
 
 ## Legend
 
 | Icon | Meaning |
 |------|---------|
-| 🔥 | Heavy usage (>15% of calls) |
-| 🟢 | Normal usage (1-15%) |
-| 🔵 | Low usage (<1%) |
-| ⚪ | Rarely used (1-2 calls total) |
+| 🔥 | Heavy usage (10+ calls) |
+| 🟢 | Normal usage (1-9 calls) |
+| ❌ | Never used (0 calls) |
 
 ## Use Cases
 
-1. **Token optimization**: Remove tools you never use from system prompts
-2. **Identify core tools**: See which tools are essential
-3. **Track habits**: Understand your usage patterns over time
-4. **Audit**: Check which capabilities you're actually leveraging
+1. **Audit your portfolio**: Which tools actually get used?
+2. **Prioritize improvements**: Fix high-usage tools first
+3. **Identify dead weight**: Remove tools nobody uses
+4. **Track adoption**: Are new tools getting picked up?
 
 ## JSON Output
 
 ```bash
-claw-usage --date=today --json | jq '.tools[] | select(.calls < 3)'
-```
+# Find unused tools
+claw-usage --json | jq '.unused[]'
 
-Returns tools with fewer than 3 calls — prime candidates for removal.
+# Get top 5 most used
+claw-usage --json | jq '.used[:5]'
+```
 
 ## License
 

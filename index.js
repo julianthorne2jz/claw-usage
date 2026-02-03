@@ -262,15 +262,15 @@ Usage:
 
 Options:
   --date=<YYYY-MM-DD|today|yesterday>  Filter by date
-  --days=<n>                           Analyze last n days
+  --days=<n>                           Analyze last n days (default: 1)
   --json                               Output JSON
   --verbose, -v                        Show example commands
   -h, --help                           Show this help
 
 Examples:
-  claw-usage                           # All sessions
-  claw-usage --date=today              # Today only
+  claw-usage                           # Last 24 hours (default)
   claw-usage --days=7                  # Last 7 days
+  claw-usage --days=999                # All time
   claw-usage --json                    # JSON for scripting
 
 Purpose:
@@ -283,9 +283,11 @@ Purpose:
 if (flags.h || flags.help) {
     showHelp();
 } else {
+    // Default to last 24 hours if no date/days specified
+    const days = flags.days || (flags.date ? undefined : 1);
     analyze({
         date: flags.date,
-        days: flags.days,
+        days: days,
         json: flags.json,
         verbose: flags.verbose || flags.v
     });
